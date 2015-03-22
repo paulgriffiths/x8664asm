@@ -27,7 +27,7 @@ funcsz  equ     8
 
 _start:
         mov     rbp, rsp                ;  Set up stack
-        sub     rsp, 16
+        sub     rsp, 16 
 
 .ncount         equ     16              ;  Local - argument counter
 .fcount         equ     8               ;  Local - function counter
@@ -38,9 +38,9 @@ _start:
 .funcloop:
         mov     rcx, [rbp-.fcount]      ;  Get function counter
         mov     rdx, funcs              ;  Get base function pointer
-        lea     r8, [rdx+rcx*funcsz]    ;  Calculate current function address
-        mov     r8, [r8]                ;  Get actual address of function
-        cmp     r8, 0                   ;  If function pointer is NULL...
+        lea     r12, [rdx+rcx*funcsz]   ;  Calculate current function address
+        mov     r12, [r12]              ;  Get actual address of function
+        cmp     r12, 0                  ;  If function pointer is NULL...
         je      .funcend                ;  ...terminate outer loop
 
         inc     QWORD [rbp-.fcount]     ;  Increment function count
@@ -55,7 +55,7 @@ _start:
 
         inc     rcx                     ;  Increment loop counter
         mov     [rbp-.ncount], rcx      ;  Save loop counter
-        call    r8                      ;  Call function
+        call    r12                     ;  Call function
         mov     rcx, [rbp-.ncount]      ;  Retrieve loop counter
         jmp     .argloop                ;  Loop again
 
