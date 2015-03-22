@@ -9,10 +9,10 @@ all: $(PROGS)
 %.o : %.asm
 	 $(AS) $(ASFLAGS) -l $*.lst -o $*.o $*.asm
 
-hello: hello.o iolib.o char_types.o
+hello: hello.o iolib.o char_types.o string.o
 	$(LD) -o $@ $^
 
-testchartype: testchartype.o iolib.o char_types.o
+testchartype: testchartype.o iolib.o char_types.o string.o
 	$(LD) -o $@ $^
 
 clean:
