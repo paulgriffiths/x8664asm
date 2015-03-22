@@ -1,0 +1,12 @@
+# Executables
+
+hello
+testchartype
+
+# Object files
+
+*.o
+
+# Yasm list output files
+
+*.lst
