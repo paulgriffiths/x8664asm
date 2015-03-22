@@ -1,18 +1,22 @@
-PROGS	:= hello testchartype
+PROGS	:= hello testchartype testatoi
 AS		:= yasm
 ASFLAGS	:= -f elf64 -g dwarf2
 RM		:= rm -f
 LD		:= ld
+LIBOBJS	:= iolib.o char_types.o string.o
 
 all: $(PROGS)
 
 %.o : %.asm
 	 $(AS) $(ASFLAGS) -l $*.lst -o $*.o $*.asm
 
-hello: hello.o iolib.o char_types.o string.o
+testatoi: testatoi.o $(LIBOBJS)
 	$(LD) -o $@ $^
 
-testchartype: testchartype.o iolib.o char_types.o string.o
+hello: hello.o $(LIBOBJS)
+	$(LD) -o $@ $^
+
+testchartype: testchartype.o $(LIBOBJS)
 	$(LD) -o $@ $^
 
 clean:
