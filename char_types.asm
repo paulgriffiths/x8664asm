@@ -64,24 +64,24 @@ char_is_space:
 ;  Returns 1 if the character is alphabetic, 0 if not
 
 char_is_alpha:
-        push    rbp
+        push    rbp                     ;  Set up stack
         mov     rbp, rsp
 
-        mov     rdx, 1
-        cmp     rdi, CHAR_UPPER_A
+        mov     rdx, 1                  ;  Default result is true for uppercase
+        cmp     rdi, CHAR_UPPER_A       ;  False if below 'A'
         cmovl   rdx, [ZERO]
-        cmp     rdi, CHAR_UPPER_Z
+        cmp     rdi, CHAR_UPPER_Z       ;  False if above 'Z'
         cmovg   rdx, [ZERO]
 
-        mov     rax, 1
-        cmp     rdi, CHAR_LOWER_A
+        mov     rax, 1                  ;  Default result is true for lowercase
+        cmp     rdi, CHAR_LOWER_A       ;  False if below 'a'
         cmovl   rax, [ZERO]
-        cmp     rdi, CHAR_LOWER_Z
+        cmp     rdi, CHAR_LOWER_Z       ;  False if above 'z'
         cmovg   rax, [ZERO]
 
-        or      rax, rdx
+        or      rax, rdx                ;  True if either test was true
 
-        leave
+        leave                           ;  Return
         ret
 
 
@@ -90,21 +90,21 @@ char_is_alpha:
 ;  Returns 1 if the character is alphanumeric, 0 if not
 
 char_is_alnum:
-        push    rbp
+        push    rbp                     ;  Set up stack
         mov     rbp, rsp
         sub     rsp, 16
 
-.n      equ     8
+.n      equ     8                       ;  Local - character to test
 
-        mov     [rbp-.n], rdi
+        mov     [rbp-.n], rdi           ;  Store character
 
-        call    char_is_alpha
-        mov     rdx, rax
+        call    char_is_alpha           ;  Check if alphabetic...
+        mov     rdx, rax                ;  ...and store result
 
-        mov     rdi, [rbp-.n]
-        call    char_is_digit
+        mov     rdi, [rbp-.n]           ;  Pass character to test
+        call    char_is_digit           ;  Check if digit
 
-        or      rax, rdx
+        or      rax, rdx                ;  True if either test was true
 
-        leave
+        leave                           ;  Return
         ret
