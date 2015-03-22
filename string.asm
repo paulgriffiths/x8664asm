@@ -38,39 +38,36 @@ string_length:
 string_to_int:
         push    rbp                     ;  Set up stack
         mov     rbp, rsp
-        sub     rsp, 32
+        sub     rsp, 32 
 
-.count  equ     32                      ;  Local - loop counter
-.total  equ     24                      ;  Local - running total
-.str    equ     16                      ;  Local - string to read
-.c      equ     8                       ;  Local - current character
+.sr12   equ     24                      ;  Local - to save r12 register
+.sr13   equ     16                      ;  Local - to save r13 register
+.sr14   equ     8                       ;  Local - to save r14 register
 
-        mov     [rbp-.str], rdi         ;  Store string to read
-        mov     QWORD [rbp-.count], 0   ;  Zero loop counter
-        mov     QWORD [rbp-.total], 0   ;  Zero running total
+        mov     [rbp-.sr12], r12        ;  Save value of r12 register
+        mov     [rbp-.sr13], r13        ;  Save value of r13 register
+        mov     [rbp-.sr14], r14        ;  Save value of r14 register
 
-        xor     rcx, rcx                ;  Loop counter
+        mov     r12, rdi                ;  Store string
+        xor     r13, r13                ;  Store running total
         
 .loop:
-        mov     rdi, [rbp-.str]         ;  Load address of string
-        movzx   rdi, BYTE [rdi+rcx]     ;  Extract current character
-        mov     [rbp-.c], rdi           ;  Save current character
-        mov     [rbp-.count], rcx       ;  Save loop counter
+        movzx   r14, BYTE [r12]         ;  Extract current character
+        mov     rdi, r14                ;  Pass current character
         call    char_is_digit           ;  Call digit test function
-        mov     rcx, [rbp-.count]       ;  Restore loop counter
-        mov     rdi, [rbp-.c]           ;  Restore current character
         cmp     rax, 1                  ;  Test if character is a digit...
-        jne     .done                   ;  ...and terminate if it isn't.
+        jne     .done                   ;  ...and terminate loop if it isn't.
 
-        mov     rax, [rbp-.total]       ;  Retrieve running total
-        imul    rax, 10                 ;  Multiply running total by 10
-        sub     rdi, CHAR_ZERO          ;  Convert current character to number
-        add     rax, rdi                ;  Add current character to total
-        mov     [rbp-.total], rax       ;  Save running total
-        inc     rcx                     ;  Increment loop count
+        imul    r13, 10                 ;  Multiply running total by 10
+        sub     r14, CHAR_ZERO          ;  Convert current character to number
+        add     r13, r14                ;  Add current character to total
+        inc     r12                     ;  Increment string pointer
         jmp     .loop                   ;  Loop again
 
 .done:
-        mov     rax, [rbp-.total]       ;  Return running total
+        mov     rax, r13                ;  Return running total
+        mov     r12, [rbp-.sr12]        ;  Restore value of r12 register
+        mov     r13, [rbp-.sr13]        ;  Restore value of r13 register
+        mov     r14, [rbp-.sr14]        ;  Restore value of r14 register
         leave
         ret
