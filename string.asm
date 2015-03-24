@@ -123,7 +123,7 @@ int_to_string:
         xor     rax, rax                ;  Clear all bits of rax register
 
 .loop:
-        cmp     rdi, 0                   ;  If integer is zero...
+        cmp     rdi, 0                  ;  If integer is zero...
         je      .done                   ;  ...then we're done
 
         xor     rdx, rdx                ;  Clear high order bits for idiv
