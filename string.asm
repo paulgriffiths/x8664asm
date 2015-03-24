@@ -76,16 +76,14 @@ string_to_int:
 string_rev:
         push    rbp                     ;  Set up stack
         mov     rbp, rsp
-        sub     rsp, 32 
+        sub     rsp, 16 
 
-.len    equ     24                      ;  Local - string length
 .c      equ     16                      ;  Local - character buffer
 .str    equ     8                       ;  Local - address of string
 
         mov     [rbp-.str], rdi         ;  Save address of string
         call    string_length           ;  Get length of string
         mov     rdi, [rbp-.str]         ;  Restore address of string
-        mov     [rbp-.len], rax         ;  Store string length
         mov     rdx, rax                ;  Set back counter to string...
         dec     rdx                     ;  ...length minus 1
         xor     rcx, rcx                ;  Set front counter to zero
