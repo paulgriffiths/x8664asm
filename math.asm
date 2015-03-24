@@ -2,8 +2,11 @@
 
 global  intlog
 
-        segment .text
+        segment .rodata
 
+one     dq      1
+
+        segment .text
 
 ;  Returns the integral (floored) log of an integer
 ;  e.g. intlog(12345, 10) would return 5
@@ -28,5 +31,7 @@ intlog:
 
 .done:
         mov     rax, rcx                ;  Return counter
+        cmp     rax, 0                  ;  If result is zero...
+        cmove   rax, [one]              ;  ...set log to 1
         leave
         ret

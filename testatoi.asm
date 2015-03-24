@@ -2,7 +2,7 @@
 
 %include        'ascii.inc'
 
-extern  put_string, exit_success, string_to_int
+extern  put_string, exit_success, string_to_int, int_to_string, print_newline
 global  _start
 
         segment .rodata
@@ -14,6 +14,10 @@ testnum2        dq      23455           ;  Does NOT match second string
 
 success         db      'Success!', CHAR_LF, CHAR_NUL
 failure         db      'Failed!', CHAR_LF, CHAR_NUL
+
+        segment .bss
+
+buffer          resb    100
 
         segment .text
 
@@ -33,5 +37,19 @@ _start:
         cmp     rax, [testnum2]         ;  Compare to test number
         cmovz   rdi, rsi                ;  Choose failure if zero
         call    put_string              ;  Output message
+
+        mov     rdi, 98765              ;  Pass integer
+        lea     rsi, [buffer]           ;  Pass address of buffer
+        call    int_to_string           ;  Convert integer to string
+        lea     rdi, [buffer]           ;  Pass address of buffer
+        call    put_string              ;  Output integer as string
+        call    print_newline           ;  Print newline
+
+        mov     rdi, 3141592653         ;  Pass integer
+        lea     rsi, [buffer]           ;  Pass address of buffer
+        call    int_to_string           ;  Convert integer to string
+        lea     rdi, [buffer]           ;  Pass address of buffer
+        call    put_string              ;  Output integer as string
+        call    print_newline           ;  Print newline
 
         call    exit_success
