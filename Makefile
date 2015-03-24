@@ -1,4 +1,4 @@
-PROGS	:= hello testchartype testatoi rand
+PROGS	:= hello testchartype testatoi rand strtest
 AS		:= yasm
 ASFLAGS	:= -f elf64 -g dwarf2
 RM		:= rm -f
@@ -17,6 +17,9 @@ rand: rand.o $(LIBOBJS)
 	gcc -o $@ $^
 
 hello: hello.o $(LIBOBJS)
+	$(LD) -o $@ $^
+
+strtest: strtest.o $(LIBOBJS)
 	$(LD) -o $@ $^
 
 testchartype: testchartype.o $(LIBOBJS)

@@ -5,7 +5,7 @@
 %include        'unix.inc'
 %include        'ascii.inc'
 
-global  string_to_int, string_length
+global  string_to_int, string_length, string_rev
 extern  char_is_digit
 
         segment .text
@@ -69,5 +69,46 @@ string_to_int:
         mov     r12, [rbp-.sr12]        ;  Restore value of r12 register
         mov     r13, [rbp-.sr13]        ;  Restore value of r13 register
         mov     r14, [rbp-.sr14]        ;  Restore value of r14 register
+        leave
+        ret
+
+
+;  Reverses a string in-place
+;  Argument 1 - the string to reverse
+
+string_rev:
+        push    rbp                     ;  Set up stack
+        mov     rbp, rsp
+        sub     rsp, 32 
+
+.len    equ     24                      ;  Local - string length
+.c      equ     16                      ;  Local - character buffer
+.str    equ     8                       ;  Local - address of string
+
+        mov     [rbp-.str], rdi         ;  Save address of string
+        call    string_length           ;  Get length of string
+        mov     rdi, [rbp-.str]         ;  Restore address of string
+        mov     [rbp-.len], rax         ;  Store string length
+        mov     rdx, rax                ;  Set back counter to string...
+        dec     rdx                     ;  ...length minus 1
+        xor     rcx, rcx                ;  Set front counter to zero
+
+.loop:
+        cmp     rcx, rdx                ;  If front counter passes back...
+        jge     .end                    ;  ...counter, then stop looping
+
+        mov     al, BYTE [rdi+rcx]      ;  Get front byte...
+        mov     BYTE [rbp-.c], al       ;  ...and save it
+        mov     al, BYTE [rdi+rdx]      ;  Get back byte...
+        mov     BYTE [rdi+rcx], al      ;  ...and put it at the front
+        mov     al, BYTE [rbp-.c]       ;  Retrieve saved front byte...
+        mov     BYTE [rdi+rdx], al      ;  ...and put it at the back
+
+        inc     rcx                     ;  Increment front counter
+        dec     rdx                     ;  Decrement back counter
+        jmp     .loop                   ;  Loop again
+
+.end:
+        xor     rax, rax                ;  Return 0
         leave
         ret

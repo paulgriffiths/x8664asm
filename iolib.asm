@@ -8,6 +8,7 @@
 %include        'ascii.inc'
 
 global  put_string, get_string, exit_success, get_char, put_char
+global  print_newline
 extern  string_length
 
         segment .text
@@ -54,6 +55,8 @@ put_char:
 
 .c      equ     16                      ;  Local - buffer, one character used 
 
+        mov     rax, rdi
+        mov     BYTE [rbp-.c], al
         mov     rax, SC_WRITE           ;  Pass system call number
         mov     rdi, STDOUT             ;  Pass file descriptor
         lea     rsi, [rbp-.c]           ;  Pass address of buffer
@@ -142,5 +145,19 @@ get_string:
         mov     rbx, [rbp-.storeb]      ;  Restore rbx register
         dec     rcx                     ;  Decrement rcx for terminating null
         mov     rax, rcx                ;  Returns number of character read
+        leave
+        ret
+
+
+;  Prints a newline character
+
+print_newline:
+        push    rbp
+        mov     rbp, rsp
+
+        mov     rdi, CHAR_LF
+        call    put_char
+
+        xor     rax, rax
         leave
         ret
