@@ -78,7 +78,6 @@ string_rev:
         mov     rbp, rsp
         sub     rsp, 16 
 
-.c      equ     16                      ;  Local - character buffer
 .str    equ     8                       ;  Local - address of string
 
         mov     [rbp-.str], rdi         ;  Save address of string
@@ -93,10 +92,10 @@ string_rev:
         jge     .end                    ;  ...counter, then stop looping
 
         mov     al, BYTE [rdi+rcx]      ;  Get front byte...
-        mov     BYTE [rbp-.c], al       ;  ...and save it
+        mov     rsi, rax                ;  ...and save it
         mov     al, BYTE [rdi+rdx]      ;  Get back byte...
         mov     BYTE [rdi+rcx], al      ;  ...and put it at the front
-        mov     al, BYTE [rbp-.c]       ;  Retrieve saved front byte...
+        mov     rax, rsi                ;  Retrieve saved front byte...
         mov     BYTE [rdi+rdx], al      ;  ...and put it at the back
 
         inc     rcx                     ;  Increment front counter
