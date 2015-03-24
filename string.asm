@@ -37,15 +37,11 @@ string_length:
 string_to_int:
         push    rbp                     ;  Set up stack
         mov     rbp, rsp
-        sub     rsp, 32 
+        sub     rsp, 8                  ;  Align stack to save 3 registers
 
-.sr12   equ     24                      ;  Local - to save r12 register
-.sr13   equ     16                      ;  Local - to save r13 register
-.sr14   equ     8                       ;  Local - to save r14 register
-
-        mov     [rbp-.sr12], r12        ;  Save value of r12 register
-        mov     [rbp-.sr13], r13        ;  Save value of r13 register
-        mov     [rbp-.sr14], r14        ;  Save value of r14 register
+        push    r12
+        push    r13
+        push    r14
 
         mov     r12, rdi                ;  Store string
         xor     r13, r13                ;  Store running total
@@ -65,9 +61,11 @@ string_to_int:
 
 .done:
         mov     rax, r13                ;  Return running total
-        mov     r12, [rbp-.sr12]        ;  Restore value of r12 register
-        mov     r13, [rbp-.sr13]        ;  Restore value of r13 register
-        mov     r14, [rbp-.sr14]        ;  Restore value of r14 register
+
+        pop     r14
+        pop     r13
+        pop     r12
+
         leave
         ret
 
