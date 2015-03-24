@@ -1,9 +1,6 @@
 ;  General utility functions
 
-%include        'unix.inc'
-%include        'ascii.inc'
-
-global  exit_success, exit_failure, pgrandom, seedrandom, intlog
+global  intlog
 
         segment .text
 
