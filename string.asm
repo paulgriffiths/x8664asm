@@ -119,18 +119,17 @@ int_to_string:
         mov     rbp, rsp
 
         xor     rcx, rcx                ;  Set counter to zero
-        mov     r8, rdi                 ;  Store integer in r8
         mov     r9, 10                  ;  Store divisor in r9
         xor     rax, rax                ;  Clear all bits of rax register
 
 .loop:
-        cmp     r8, 0                   ;  If integer is zero...
+        cmp     rdi, 0                   ;  If integer is zero...
         je      .done                   ;  ...then we're done
 
         xor     rdx, rdx                ;  Clear high order bits for idiv
-        mov     rax, r8                 ;  Move integer into rax
+        mov     rax, rdi                ;  Move integer into rax
         idiv    r9                      ;  Divide by 10
-        mov     r8, rax                 ;  Store quotient back in r8
+        mov     rdi, rax                ;  Replace previous int with quotient
         mov     rax, rdx                ;  Move remainder to rax
         add     rax, CHAR_ZERO          ;  Convert to digit character
         mov     BYTE [rsi+rcx], al      ;  Store character
