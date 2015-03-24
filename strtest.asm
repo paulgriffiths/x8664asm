@@ -2,7 +2,7 @@
 
 %include        'ascii.inc'
 
-extern  put_string, exit_success, string_rev, print_newline
+extern  put_string, exit_success, string_rev, print_newline, put_int
 global  _start
 
         segment .rodata
@@ -33,6 +33,10 @@ _start:
         call    put_string
         lea     rdi, [hwstr]
         call    put_string
+        call    print_newline
+
+        mov     rdi, 12345
+        call    put_int
         call    print_newline
 
         call    exit_success

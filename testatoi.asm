@@ -3,6 +3,7 @@
 %include        'ascii.inc'
 
 extern  put_string, exit_success, string_to_int, int_to_string, print_newline
+extern  put_int
 global  _start
 
         segment .rodata
@@ -39,17 +40,11 @@ _start:
         call    put_string              ;  Output message
 
         mov     rdi, 98765              ;  Pass integer
-        lea     rsi, [buffer]           ;  Pass address of buffer
-        call    int_to_string           ;  Convert integer to string
-        lea     rdi, [buffer]           ;  Pass address of buffer
-        call    put_string              ;  Output integer as string
+        call    put_int                 ;  Output integer as string
         call    print_newline           ;  Print newline
 
         mov     rdi, 3141592653         ;  Pass integer
-        lea     rsi, [buffer]           ;  Pass address of buffer
-        call    int_to_string           ;  Convert integer to string
-        lea     rdi, [buffer]           ;  Pass address of buffer
-        call    put_string              ;  Output integer as string
+        call    put_int                 ;  Output integer as string
         call    print_newline           ;  Print newline
 
         call    exit_success

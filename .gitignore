@@ -5,6 +5,7 @@ testchartype
 testatoi
 rand
 strtest
+testinput
 
 # Object files
 

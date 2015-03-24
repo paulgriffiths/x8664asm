@@ -2,18 +2,15 @@
 
 %include        'ascii.inc'
 
-extern  pgrandom, printf, seedrandom
-global  main
+extern  pgrandom, seedrandom, put_int, print_newline, exit_success
+global  _start
 
         segment .rodata
 rnstr   db      '%d', CHAR_LF, CHAR_NUL
 
         segment .text
 
-main:
-        push    rbp
-        mov     rbp, rsp
-
+_start:
         call    seedrandom
         mov     rbx, 10
 
@@ -22,13 +19,11 @@ main:
         je      .end
         mov     rdi, 100
         call    pgrandom
-        mov     rsi, rax
-        lea     rdi, [rnstr]
-        xor     rax, rax
-        call    printf
+        mov     rdi, rax
+        call    put_int
+        call    print_newline
         dec     rbx
         jmp     .loop
 
 .end:
-        leave
-        ret
+        call    exit_success

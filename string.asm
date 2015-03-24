@@ -137,6 +137,12 @@ int_to_string:
         jmp     .loop                   ;  Loop again
 
 .done:
+        cmp     rcx, 0                  ;  Check if nothing written
+        jne     .addnull                ;  Skip if false
+        mov     BYTE [rsi+rcx], CHAR_ZERO       ;  Set string to '0'
+        inc     rcx                     ;  Increment loop counter
+
+.addnull:
         mov     BYTE [rsi+rcx], CHAR_NUL        ;  Add terminating null
         mov     rdi, rsi                ;  Pass address of string...
         call    string_rev              ;  ...and reverse it

@@ -8,8 +8,8 @@
 %include        'ascii.inc'
 
 global  put_string, get_string, exit_success, get_char, put_char
-global  print_newline
-extern  string_length
+global  print_newline, put_int, get_int
+extern  string_length, int_to_string, string_to_int
 
         segment .text
 
@@ -152,12 +152,53 @@ get_string:
 ;  Prints a newline character
 
 print_newline:
-        push    rbp
+        push    rbp                     ;  Set up stack
         mov     rbp, rsp
 
-        mov     rdi, CHAR_LF
-        call    put_char
+        mov     rdi, CHAR_LF            ;  Pass newline character
+        call    put_char                ;  Call function
 
-        xor     rax, rax
+        xor     rax, rax                ;  Return 0
         leave
+        ret
+
+
+;  Prints an integer to standard output
+;  Argument 1 - the integer to print
+
+put_int:
+        push    rbp                     ;  Set up stack
+        mov     rbp, rsp
+        sub     rsp, 32                 ;  Big enough for 64 bit int
+
+.str    equ     32                      ;  Local - string buffer
+
+        lea     rsi, [rbp-.str]         ;  Pass buffer (integer already in
+        call    int_to_string           ;  rdi) and convert to string
+
+        lea     rdi, [rbp-.str]         ;  Pass address of buffer...
+        call    put_string              ;  ...and print it
+
+        xor     rax, rax                ;  Return 0
+        leave
+        ret
+
+
+;  Gets an integer from standard input
+
+get_int:
+        push    rbp                     ;  Set up stack
+        mov     rbp, rsp
+        sub     rsp, 128
+
+.str    equ     128
+
+        lea     rdi, [rbp-.str]         ;  Get string
+        mov     rsi, 128
+        call    get_string
+
+        lea     rdi, [rbp-.str]         ;  Convert to integer
+        call    string_to_int
+
+        leave                           ;  Return integer
         ret
