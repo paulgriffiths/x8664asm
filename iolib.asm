@@ -13,14 +13,6 @@ extern  string_length
         segment .text
 
 
-;  Exits successfully
-
-exit_success:
-        mov     rax, SC_EXIT            ;  Pass system call number
-        xor     rdi, rdi                ;  Pass zero exit status
-        syscall                         ;  Make exit system call
-
-
 ;  Reads a character from standard input
 ;  Returns the character read, or -1 on failure
 

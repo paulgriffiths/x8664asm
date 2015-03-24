@@ -1,9 +1,9 @@
-PROGS	:= hello testchartype testatoi
+PROGS	:= hello testchartype testatoi rand
 AS		:= yasm
 ASFLAGS	:= -f elf64 -g dwarf2
 RM		:= rm -f
 LD		:= ld
-LIBOBJS	:= iolib.o char_types.o string.o
+LIBOBJS	:= iolib.o char_types.o string.o general.o math.o
 
 all: $(PROGS)
 
@@ -12,6 +12,9 @@ all: $(PROGS)
 
 testatoi: testatoi.o $(LIBOBJS)
 	$(LD) -o $@ $^
+
+rand: rand.o $(LIBOBJS)
+	gcc -o $@ $^
 
 hello: hello.o $(LIBOBJS)
 	$(LD) -o $@ $^
