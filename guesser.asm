@@ -35,10 +35,10 @@ _start:
 .gameover:                              ;  Game ends here
         call    end_game                ;  Finish game
         call    query_new               ;  Ask for new game
-        cmp     rax, 1
-        je      .gamestart
+        cmp     rax, 1                  ;  If return value was 0...
+        je      .gamestart              ;  ...then start new game.
 
-.end:
+.end:                                   ;  Otherwise, exit program.
         call    exit_success
 
 
