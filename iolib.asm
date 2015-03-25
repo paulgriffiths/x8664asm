@@ -8,8 +8,10 @@
 %include        'ascii.inc'
 
 global  put_string, get_string, exit_success, get_char, put_char
-global  print_newline, put_int, get_int
+global  print_newline, put_int, get_int, get_char_line
 extern  string_length, int_to_string, string_to_int
+
+BUFLEN  equ     128
 
         segment .text
 
@@ -189,16 +191,31 @@ put_int:
 get_int:
         push    rbp                     ;  Set up stack
         mov     rbp, rsp
-        sub     rsp, 128
+        sub     rsp, BUFLEN
 
-.str    equ     128
-
-        lea     rdi, [rbp-.str]         ;  Get string
-        mov     rsi, 128
+        lea     rdi, [rbp-BUFLEN]       ;  Get string
+        mov     rsi, BUFLEN
         call    get_string
 
-        lea     rdi, [rbp-.str]         ;  Convert to integer
+        lea     rdi, [rbp-BUFLEN]       ;  Convert to integer
         call    string_to_int
 
         leave                           ;  Return integer
+        ret
+
+
+;  Gets a single character and discards rest of line
+
+get_char_line:
+        push    rbp                     ;  Set up stack
+        mov     rbp, rsp
+        sub     rsp, BUFLEN
+
+        lea     rdi, [rbp-BUFLEN]       ;  Get string
+        call    get_string
+
+        xor     rax, rax                ;  Zero rax
+        mov     al, BYTE [rbp-BUFLEN]   ;  Return first character
+
+        leave
         ret

@@ -1,4 +1,4 @@
-PROGS	:= hello testchartype testatoi rand strtest testinput
+PROGS	:= hello testchartype testatoi rand strtest testinput guesser
 AS		:= yasm
 ASFLAGS	:= -f elf64 -g dwarf2
 RM		:= rm -f
@@ -11,6 +11,9 @@ all: $(PROGS)
 	 $(AS) $(ASFLAGS) -l $*.lst -o $*.o $*.asm
 
 testatoi: testatoi.o $(LIBOBJS)
+	$(LD) -o $@ $^
+
+guesser: guesser.o $(LIBOBJS)
 	$(LD) -o $@ $^
 
 testinput: testinput.o $(LIBOBJS)
