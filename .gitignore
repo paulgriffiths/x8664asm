@@ -7,6 +7,7 @@ rand
 strtest
 testinput
 guesser
+primes
 
 # Object files
 
@@ -15,3 +16,8 @@ guesser
 # Yasm list output files
 
 *.lst
+
+# Other scratch files
+
+*.s
+*.incs
