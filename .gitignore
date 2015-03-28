@@ -9,9 +9,11 @@ testinput
 guesser
 primes
 
-# Object files
+# Object and library files
 
 *.o
+*.a
+*.so
 
 # Yasm list output files
 
