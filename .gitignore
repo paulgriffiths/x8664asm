@@ -1,13 +1,7 @@
 # Executables
 
-hello
-testchartype
-testatoi
-rand
-strtest
-testinput
-guesser
-primes
+bin/*
+!bin/README.md
 
 # Object and library files
 
