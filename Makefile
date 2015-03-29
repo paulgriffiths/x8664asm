@@ -12,7 +12,6 @@ AS          := yasm
 ASFLAGS	    := -f elf64 -g dwarf2 -I$(INCLDIR)
 RM          := rm -f
 LD          := ld
-LIBOBJS	    := iolib.o char_types.o string.o general.o math.o
 LDFLAGS     := -Llib
 LDLIBS	    := -lpgasm
 
